@@ -4,21 +4,22 @@ CREATE DATABASE roster_db;
 USE roster_db;
 
 CREATE TABLE department (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    dept_name VARCHAR(30)
+    department_id INT PRIMARY KEY AUTO_INCREMENT,
+    department_name VARCHAR(30)
 );
 
 CREATE TABLE role (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    role_id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(30),
     salary DECIMAL(9,2),
-    department_id INT
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES department(department_id)
 );
 
 CREATE TABLE employee (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    employee_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
-    role_id (INT),
-    manager_id INT
+    role_id INT,
+    FOREIGN KEY (role_id) REFERENCES role(role_id)
 );
