@@ -21,15 +21,15 @@ VALUES  ("CNC Op", 67000, 1),
         ("Photographer", 973000, 6);
 
 INSERT INTO employee (first_name, last_name, role_id)
-VALUES  ( "Travis", "Stanford", 1),
-        ( "Tweaker", "Dabney", 2),
-        ( "Little", "Jerome", 3),
-        ( "Rain Man", "", 4),
+VALUES  ("Travis", "Stanford", 1),
+        ("Tweaker", "Dabney", 2),
+        ("Little", "Jerome", 3),
+        ("Rain Man", "", 4),
         ("Big", "Jeff", 5),
         ("Matt", "Rogers", 6),
         ("Jack", "Nelson", 7),
         ("Drew", "Bear", 8),
-        ( "Spools", "", 9),
+        ("Spools", "", 9),
         ("Justin", "Moore", 10),
         ("Aaron", "Huff", 11),
         ("Joey", "Garbage", 12);
