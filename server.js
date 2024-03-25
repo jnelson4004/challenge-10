@@ -1,14 +1,5 @@
-const express = require('express');
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const sequelize = require("sequelize");
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 
 // Connect to database
 const db = mysql.createConnection(
@@ -32,15 +23,15 @@ const mainMenu = [
     }
 ];
 
-const addDept = [
+const newDepartment = [
     {
         type: "input",
-        name: "department",
+        name: "department_name",
         message: "Enter Department Name:"
     }
 ];
 
-const addRole = [
+const newRole = [
     {
         type: "input",
         name: "title",
@@ -53,10 +44,28 @@ const addRole = [
     },
     {
         type: "input",
-        name: "department id",
+        name: "department_id",
         message: "Enter Department ID:"
     }
 ];
+
+const newEmployee = [
+    {
+        type: "input",
+        name: "first_name",
+        message: "Enter First Name:"
+    },
+    {
+        type: "input",
+        name: "last_name",
+        message: "Enter Last Name:"
+    },
+    {
+        type: "input",
+        name: "role_id",
+        message: "Enter Role ID:"
+    }
+]
   
 const promptMenu = () => {
 
@@ -78,7 +87,7 @@ const promptMenu = () => {
                 addDepartment();
             break;
             case "Add Role":
-                addRoles();
+                addRole();
             break;
             case "Add Employee":
                 addEmployee();
@@ -92,82 +101,86 @@ const promptMenu = () => {
 };
 
 
-const viewDepartments= ()=> {
-    // query your databasse - use mysql
-    console.log("===================View Deparments Starting +===================================")
-    promptMenu()
+const viewDepartments = () => {
+
+    const insertQuery = "SELECT * FROM department";
+
+    db.query(insertQuery, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+    });
+promptMenu();
 };
 
-const viewRoles= ()=> {
-    // query your databasse - use mysql
-    console.log("===================View Roles Starting +===================================")
-    promptMenu()
+
+const viewRoles = () => {
+    
+    const insertQuery = "SELECT * FROM role";
+
+    db.query(insertQuery, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+    });
+promptMenu();
 };
 
 const viewEmployees = () => {
-    // query your databasse - use mysql
-    console.log("===================View Employees Starting +===================================")
-    promptMenu()
+    
+    const insertQuery = "SELECT * FROM employee";
+
+    db.query(insertQuery, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+    });
+promptMenu();
 };
 
 const addDepartment = () => {
 
-    inquirer.prompt(addDept).then(answers => {
+    inquirer.prompt(newDepartment).then(answers => {
         console.log(answers);
     
-        const insertQuery = 'INSERT INTO department (department_name) VALUES ("answers")';
-        const values = [(answers)];
+        const insertQuery = "INSERT INTO department (department_name) VALUES (?)";
+        const values = [answers.department_name];
 
         db.query(insertQuery, values, (err, result) => {
             if (err) throw err;
             console.log(result);
-        })    
-    })
-
-    // query your databasse - use mysql
-    promptMenu();
+        });
+    promptMenu();    
+    });    
 };
 
-const addRoles = () => {
+const addRole = () => {
 
-    inquirer.prompt(addRole).then(answers => {
+    inquirer.prompt(newRole).then(answers => {
         console.log(answers);
-    
-        const insertQuery = 'INSERT INTO role (title, salary, department_id) VALUES ("answers")';
-        const values = [(answers)];
+
+        const insertQuery = "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)";
+        const values = [answers.title, answers.salary, answers.department_id];
 
         db.query(insertQuery, values, (err, result) => {
             if (err) throw err;
             console.log(result);
-        })
-    })
-    // query your databasse - use mysql
-    promptMenu();  
+        });
+    promptMenu();
+    });
 };
 
 const addEmployee = () => {
 
-    inquirer.prompt(addEmployee).then(answers => {
+    inquirer.prompt(newEmployee).then(answers => {
         console.log(answers);
     
-        const insertQuery = 'INSERT INTO employee (first_name, last_name, role_id) VALUES ("answers")';
-        const values = [(answers)];
+        const insertQuery = "INSERT INTO employee (first_name, last_name, role_id) VALUES (?, ?, ?)";
+        const values = [answers.first_name, answers.last_name, answers.role_id];
 
         db.query(insertQuery, values, (err, result) => {
             if (err) throw err;
             console.log(result);
-            promptMenu();
-        })
-        
-    // query your databasse - use mysql
-    })
-    
-};
-
-const updateEmployeeRole = () => {
-    // query your databasse - use mysql
-    console.log("===================Role Editor Starting +===================================")
-    promptMenu()
+        });
+    promptMenu();
+    });
 };
 
 promptMenu();
